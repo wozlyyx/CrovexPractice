@@ -1,0 +1,222 @@
+# ==================================================
+# CrovexPractice Configuration
+# You can modify all values from here.
+# ==================================================
+
+# ---- Server General Settings ----
+server:
+  # Server name (used in placeholders and titles)
+  name: "CrovexPractice"
+  # Lobby spawn location (saved automatically - do not modify manually, use /cpractice setlobbyspawn)
+  # lobby-spawn: <automatic>
+
+# ---- Queue & Matchmaking Settings ----
+queue:
+  # Enable or disable ranked queue completely
+  ranked-enabled: true
+  # Enable or disable unranked queue completely
+  unranked-enabled: true
+  # Queue check interval (in ticks, 20 ticks = 1 second)
+  check-interval: 20
+  # ELO settings for ranked queue
+  elo:
+    # Starting ELO for new players
+    starting: 1000
+    # Minimum value ELO can drop to
+    minimum: 100
+    # Starting ELO range for matchmaking
+    range-starting: 50
+    # ELO range expansion per second (makes it easier to find players)
+    range-expansion-per-second: 25
+    # Maximum ELO gained per win
+    gain-max: 40
+    # Maximum ELO lost per loss
+    loss-max: 40
+
+# ---- Match Settings ----
+match:
+  # Pre-match countdown duration (seconds)
+  countdown-seconds: 5
+  # Delay before returning to lobby after match ends (seconds)
+  lobby-return-delay: 3
+  # Number of hits required to win in boxing mode
+  boxing-max-hits: 100
+  # Players going out of arena bounds during a match are automatically eliminated
+  out-of-bounds-elimination: true
+  # How long match inventories are cached (seconds, for post-match viewing)
+  inventory-cache-seconds: 120
+  # Maximum match duration (seconds, match ends in a draw when expired)
+  max-duration-seconds: 600
+
+# ---- FFA (Free For All) Permanent Area Settings ----
+ffa:
+  # Delay before teleporting to spawn after death (seconds, 0 = instant)
+  respawn-delay: 0
+  # Block placing/breaking prevention in FFA
+  block-building: true
+  # Item dropping prevention in FFA
+  block-item-drop: true
+  # Prevent damaging players in FFA while they are in lobby
+  block-lobby-damage: true
+  # Win streak milestones - announcements are broadcasted globally upon reaching these
+  streak-milestones: [5, 10, 15, 20, 25, 50, 100]
+  # Combat tag duration (seconds) - leaving FFA is blocked during this (0 = disabled)
+  combat-tag-seconds: 0
+
+# ---- FFA Arenas List ----
+ffa-arenas:
+  DefaultFFA:
+    enabled: false
+    kit: "NoDebuff"
+  # FFA area boundaries (saved automatically - do not modify manually, use GUI)
+  # bounds: <automatic>
+  # FFA spawn location (saved automatically)
+  # spawn: <automatic>
+
+# ---- Lobby Items Slot Settings ----
+lobby:
+  items:
+    # Which slot each item is placed in (0-8, hotbar)
+    unranked-slot: 0
+    ranked-slot: 1
+    kit-editor-slot: 4
+    leaderboard-slot: 6
+    party-slot: 7
+    stats-slot: 8
+
+# ---- Leaderboard Settings ----
+leaderboard:
+  # How many players to display (maximum 10)
+  top-count: 10
+  # Which categories to display
+  categories:
+    elo: true
+    ffa-kills: true
+    ffa-streak: true
+
+# ---- Party Settings ----
+party:
+  # Party invite expiry duration (seconds)
+  invite-expiry-seconds: 30
+  # Duel challenge invite expiry duration (seconds)
+  challenge-expiry-seconds: 60
+  # Minimum player count for Party FFA/Split
+  min-players-for-match: 2
+
+# ---- Database Settings ----
+database:
+  # Database type: sqlite, mysql, or mariadb
+  type: sqlite
+  # SQLite filename (applies to sqlite only)
+  filename: practice.db
+  # MySQL / MariaDB settings (applies to mysql/mariadb only)
+  host: localhost
+  port: 3306
+  database: practice
+  username: root
+  password: ""
+  use-ssl: false
+
+# ---- Match Broadcast Settings ----
+broadcast:
+  # Broadcast to the server when a match starts?
+  match-start: false
+  # Broadcast to the server when a match ends?
+  match-end: false
+  # Broadcast FFA win streak milestones globally?
+  ffa-streak-global: true
+  # Automatically refresh leaderboards? (0 = disabled, value in seconds)
+  leaderboard-refresh-seconds: 0
+
+# ---- Discord Webhook Settings ----
+webhook:
+  # Set to true to enable webhook notifications
+  enabled: false
+  # Discord Webhook URL (Paste your Discord channel webhook link here)
+  url: "DISCORD_WEBHOOK_URL_HERE"
+  # Which events should be sent to Discord?
+  events:
+    # Sends winner, loser, duration, and ELO changes when a match ends
+    match-end: true
+    # Sends when a player reaches a win streak milestone in FFA
+    ffa-streak: true
+    # Sends when an admin creates or deletes an arena/kit
+    admin-actions: true
+
+# ---- Command Configuration ----
+# Change all main commands' names, aliases, and subcommands from here.
+# NOTE: Multiple words can be defined for subcommands. The first one is suggested in tab completion.
+commands:
+  cpractice:
+    name: "cpractice"
+    aliases: ["practice", "crovexpractice"]
+    description: "Main admin command."
+    subcommands:
+      admin: ["admin"]
+      createarena: ["createarena"]
+      deletearena: ["deletearena"]
+      setup: ["setup"]
+      savebounds: ["savebounds"]
+      editlayout: ["editlayout"]
+      kits: ["kits"]
+      createkit: ["createkit"]
+      deletekit: ["deletekit"]
+      setinv: ["setinv"]
+      seticon: ["seticon"]
+      editinv: ["editinv"]
+      createffa: ["createffa"]
+      deleteffa: ["deleteffa"]
+      ffa: ["ffa"]
+      setupffa: ["setupffa"]
+      saveffabounds: ["saveffabounds"]
+      setlobbyspawn: ["setlobbyspawn"]
+      resetitems: ["resetitems"]
+      viewinv: ["viewinv"]
+      reload: ["reload"]
+  queue:
+    name: "queue"
+    aliases: ["q"]
+    description: "Command to join queues."
+  party:
+    name: "party"
+    aliases: ["p"]
+    description: "Party management commands."
+    subcommands:
+      create: ["create"]
+      invite: ["invite"]
+      accept: ["accept"]
+      leave: ["leave"]
+      kick: ["kick"]
+      chat: ["chat", "c"]
+      ffa: ["ffa"]
+      split: ["split"]
+      challenge: ["challenge", "duel"]
+      acceptchallenge: ["acceptchallenge"]
+      declinechallenge: ["declinechallenge", "rejectchallenge"]
+  spectate:
+    name: "spectate"
+    aliases: ["spec"]
+    description: "Command to spectate ongoing matches."
+  stats:
+    name: "stats"
+    aliases: ["stat"]
+    description: "Command to view player statistics."
+  ffa:
+    name: "ffa"
+    aliases: ["joinffa", "ffapvp"]
+    description: "Command to join the FFA area."
+  leaveffa:
+    name: "leaveffa"
+    aliases: ["quitffa", "ffaleave"]
+    description: "Command to leave the FFA area."
+  leaderboard:
+    name: "leaderboard"
+    aliases: ["top", "lb", "leaderboards"]
+    description: "Command to view leaderboards."
+  duel:
+    name: "duel"
+    aliases: ["d", "challenge", "vs"]
+    description: "Command for 1v1 duels."
+    subcommands:
+      accept: ["accept"]
+      decline: ["decline", "reject"]

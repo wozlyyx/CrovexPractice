@@ -1,0 +1,9 @@
+name: CrovexPractice
+version: '${version}'
+main: com.crovex.practice.CrovexPractice
+api-version: '1.20'
+author: wozly_v2
+description: A advanced practice plugin for Minecraft 1.20
+softdepend: [PlaceholderAPI]
+
+
