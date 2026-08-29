@@ -34,7 +34,10 @@ public class KitManager {
             try {
                 plugin.getDataFolder().mkdirs();
                 configFile.createNewFile();
+                config = YamlConfiguration.loadConfiguration(configFile);
                 createDefaultKits();
+                plugin.getLogger().info(kits.size() + " adet varsayilan kit olusturuldu.");
+                return;
             } catch (IOException e) {
                 plugin.getLogger().log(Level.SEVERE, "kits.yml dosyasi olusturulamadi!", e);
             }
@@ -146,7 +149,7 @@ public class KitManager {
         boxing.setType(KitType.BOXING);
         boxing.setIcon(new ItemStack(Material.RAW_GOLD));
         ItemStack bSword = new ItemStack(Material.DIAMOND_SWORD);
-        bSword.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+        enchant(bSword, "sharpness", 1);
         ItemStack[] bInv = new ItemStack[36];
         bInv[0] = bSword;
         boxing.setInventoryContents(bInv);
@@ -162,15 +165,13 @@ public class KitManager {
         noDebuff.setIcon(new ItemStack(Material.SPLASH_POTION));
         
         ItemStack ndSword = new ItemStack(Material.DIAMOND_SWORD);
-        ndSword.addEnchantment(Enchantment.DAMAGE_ALL, 1);
-        ndSword.addEnchantment(Enchantment.DURABILITY, 3);
+        enchant(ndSword, "sharpness", 1);
+        enchant(ndSword, "unbreaking", 3);
         
         ItemStack ndPearl = new ItemStack(Material.ENDER_PEARL, 16);
         ItemStack ndSpeedPot = new ItemStack(Material.POTION); // speed II drink pot
-        // In 1.20 we can just use normal potions, but let's keep it simple for now, we will create items
         
         ItemStack healingPot = new ItemStack(Material.SPLASH_POTION);
-        // We will just populate the inventory with healing potions and simple items
         ItemStack[] ndInv = new ItemStack[36];
         ndInv[0] = ndSword;
         ndInv[1] = ndPearl;
@@ -181,10 +182,10 @@ public class KitManager {
         noDebuff.setInventoryContents(ndInv);
 
         ItemStack[] ndArmor = new ItemStack[4];
-        ndArmor[3] = enchant(new ItemStack(Material.DIAMOND_HELMET), Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-        ndArmor[2] = enchant(new ItemStack(Material.DIAMOND_CHESTPLATE), Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-        ndArmor[1] = enchant(new ItemStack(Material.DIAMOND_LEGGINGS), Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-        ndArmor[0] = enchant(new ItemStack(Material.DIAMOND_BOOTS), Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+        ndArmor[3] = enchant(new ItemStack(Material.DIAMOND_HELMET), "protection", 2);
+        ndArmor[2] = enchant(new ItemStack(Material.DIAMOND_CHESTPLATE), "protection", 2);
+        ndArmor[1] = enchant(new ItemStack(Material.DIAMOND_LEGGINGS), "protection", 2);
+        ndArmor[0] = enchant(new ItemStack(Material.DIAMOND_BOOTS), "protection", 2);
         noDebuff.setArmorContents(ndArmor);
         
         List<PotionEffect> ndEffects = new ArrayList<>();
@@ -198,13 +199,13 @@ public class KitManager {
         buildUhc.setType(KitType.BUILDUHC);
         buildUhc.setIcon(new ItemStack(Material.GOLDEN_APPLE));
 
-        ItemStack uhcSword = enchant(new ItemStack(Material.DIAMOND_SWORD), Enchantment.DAMAGE_ALL, 2);
-        ItemStack uhcBow = enchant(new ItemStack(Material.BOW), Enchantment.ARROW_DAMAGE, 2);
+        ItemStack uhcSword = enchant(new ItemStack(Material.DIAMOND_SWORD), "sharpness", 2);
+        ItemStack uhcBow = enchant(new ItemStack(Material.BOW), "power", 2);
         ItemStack uhcRod = new ItemStack(Material.FISHING_ROD);
         ItemStack uhcPlanks = new ItemStack(Material.OAK_PLANKS, 64);
         ItemStack uhcCobble = new ItemStack(Material.COBBLESTONE, 64);
         ItemStack gApple = new ItemStack(Material.GOLDEN_APPLE, 6);
-        ItemStack gHead = new ItemStack(Material.GOLDEN_APPLE, 3); // Rename to Golden Head later
+        ItemStack gHead = new ItemStack(Material.GOLDEN_APPLE, 3);
         ItemMeta headMeta = gHead.getItemMeta();
         headMeta.displayName(MiniMessage.miniMessage().deserialize("<gradient:#ffaa00:#ffff55>Golden Head</gradient>"));
         gHead.setItemMeta(headMeta);
@@ -225,10 +226,10 @@ public class KitManager {
         buildUhc.setInventoryContents(uhcInv);
 
         ItemStack[] uhcArmor = new ItemStack[4];
-        uhcArmor[3] = enchant(new ItemStack(Material.DIAMOND_HELMET), Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-        uhcArmor[2] = enchant(new ItemStack(Material.DIAMOND_CHESTPLATE), Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-        uhcArmor[1] = enchant(new ItemStack(Material.DIAMOND_LEGGINGS), Enchantment.PROTECTION_ENVIRONMENTAL, 2);
-        uhcArmor[0] = enchant(new ItemStack(Material.DIAMOND_BOOTS), Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+        uhcArmor[3] = enchant(new ItemStack(Material.DIAMOND_HELMET), "protection", 2);
+        uhcArmor[2] = enchant(new ItemStack(Material.DIAMOND_CHESTPLATE), "protection", 2);
+        uhcArmor[1] = enchant(new ItemStack(Material.DIAMOND_LEGGINGS), "protection", 2);
+        uhcArmor[0] = enchant(new ItemStack(Material.DIAMOND_BOOTS), "protection", 2);
         buildUhc.setArmorContents(uhcArmor);
         kits.put("builduhc", buildUhc);
 
@@ -237,8 +238,12 @@ public class KitManager {
         saveKits();
     }
 
-    private ItemStack enchant(ItemStack item, Enchantment enchant, int lvl) {
-        item.addEnchantment(enchant, lvl);
+    private ItemStack enchant(ItemStack item, String enchantKey, int lvl) {
+        Enchantment enchant = Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft(enchantKey));
+        if (enchant != null) {
+            item.addUnsafeEnchantment(enchant, lvl);
+        }
         return item;
     }
 }
+

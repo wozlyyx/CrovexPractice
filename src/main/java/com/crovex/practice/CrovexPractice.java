@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-public final class CrovexPractice extends JavaPlugin {
+public class CrovexPractice extends JavaPlugin {
 
     private static CrovexPractice instance;
 

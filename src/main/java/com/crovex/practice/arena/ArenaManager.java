@@ -105,6 +105,10 @@ public class ArenaManager {
         saveArenas();
     }
 
+    public void addArena(Arena arena) {
+        arenas.put(arena.getName().toLowerCase(), arena);
+    }
+
     public void deleteArena(String name) {
         arenas.remove(name.toLowerCase());
         saveArenas();

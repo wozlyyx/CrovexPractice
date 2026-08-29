@@ -48,7 +48,13 @@ public class PlayerManager {
     }
 
     public PracticePlayer getPlayer(Player player) {
-        return players.get(player.getUniqueId());
+        if (player == null) return null;
+        PracticePlayer pp = players.get(player.getUniqueId());
+        if (pp == null) {
+            pp = new PracticePlayer(player.getUniqueId(), player.getName());
+            players.put(player.getUniqueId(), pp);
+        }
+        return pp;
     }
 
     public void saveAllPlayersSync() {
@@ -59,7 +65,7 @@ public class PlayerManager {
 
     public void giveLobbyItems(Player player) {
         player.getInventory().clear();
-        player.getInventory().setArmorContents(null);
+        player.getInventory().setArmorContents(new ItemStack[4]);
         player.setGameMode(GameMode.SURVIVAL);
         player.setHealth(20.0);
         player.setFoodLevel(20);
@@ -128,7 +134,7 @@ public class PlayerManager {
 
     public void resetPlayer(Player player) {
         player.getInventory().clear();
-        player.getInventory().setArmorContents(null);
+        player.getInventory().setArmorContents(new ItemStack[4]);
         player.setGameMode(GameMode.SURVIVAL);
         player.setHealth(20.0);
         player.setFoodLevel(20);

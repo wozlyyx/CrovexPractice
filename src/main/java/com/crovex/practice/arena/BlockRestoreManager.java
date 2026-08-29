@@ -3,6 +3,7 @@ package com.crovex.practice.arena;
 import com.crovex.practice.CrovexPractice;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -76,6 +77,7 @@ public class BlockRestoreManager {
                 change.put("x", loc.getBlockX());
                 change.put("y", loc.getBlockY());
                 change.put("z", loc.getBlockZ());
+                change.put("material", originalData.getMaterial().name());
                 change.put("blockData", originalData.getAsString());
                 changes.add(change);
                 config.set("changes", changes);
@@ -127,17 +129,27 @@ public class BlockRestoreManager {
                 Integer x = (Integer) map.get("x");
                 Integer y = (Integer) map.get("y");
                 Integer z = (Integer) map.get("z");
+                String matName = (String) map.get("material");
                 String blockDataStr = (String) map.get("blockData");
 
-                if (worldName != null && x != null && y != null && z != null && blockDataStr != null) {
+                if (worldName != null && x != null && y != null && z != null) {
                     World world = Bukkit.getWorld(worldName);
                     if (world != null) {
                         Location loc = new Location(world, x, y, z);
-                        try {
-                            BlockData data = Bukkit.createBlockData(blockDataStr);
-                            loc.getBlock().setBlockData(data, false);
-                        } catch (Exception e) {
-                            plugin.getLogger().log(Level.WARNING, "Blok geri yuklenirken hata olustu: " + loc.toString(), e);
+                        boolean restored = false;
+                        if (blockDataStr != null) {
+                            try {
+                                BlockData data = Bukkit.createBlockData(blockDataStr);
+                                loc.getBlock().setBlockData(data, false);
+                                restored = true;
+                            } catch (Throwable ignored) {}
+                        }
+                        if (!restored && matName != null) {
+                            Material mat = Material.matchMaterial(matName);
+                            if (mat != null) {
+                                loc.getBlock().setType(mat, false);
+                                restored = true;
+                            }
                         }
                     }
                 }

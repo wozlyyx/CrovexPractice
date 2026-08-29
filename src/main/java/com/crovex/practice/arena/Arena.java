@@ -151,7 +151,11 @@ public class Arena {
         
         // Restore each block state without triggering block physics
         originalBlocks.forEach((loc, data) -> {
-            loc.getBlock().setBlockData(data, false);
+            try {
+                loc.getBlock().setBlockData(data, false);
+            } catch (Throwable e) {
+                loc.getBlock().setType(data.getMaterial(), false);
+            }
         });
         
         originalBlocks.clear();

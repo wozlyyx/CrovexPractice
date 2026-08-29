@@ -91,18 +91,22 @@ public class Kit {
      */
     public void applyToPlayer(Player player, ItemStack[] customLayout) {
         player.getInventory().clear();
-        player.getInventory().setArmorContents(null);
+        player.getInventory().setArmorContents(new ItemStack[4]);
         player.getActivePotionEffects().clear();
 
         // Apply inventory layout
         if (customLayout != null) {
             player.getInventory().setContents(customLayout);
-        } else {
+        } else if (inventoryContents != null) {
             player.getInventory().setContents(inventoryContents);
         }
 
         // Apply armor
-        player.getInventory().setArmorContents(armorContents);
+        if (armorContents != null) {
+            player.getInventory().setArmorContents(armorContents);
+        } else {
+            player.getInventory().setArmorContents(new ItemStack[4]);
+        }
 
         // Apply potion effects
         for (PotionEffect effect : activeEffects) {

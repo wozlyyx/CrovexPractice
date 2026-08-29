@@ -407,7 +407,7 @@ public class Match {
 
     private void makePlayerSpectator(Player player) {
         player.getInventory().clear();
-        player.getInventory().setArmorContents(null);
+        player.getInventory().setArmorContents(new ItemStack[4]);
         player.setGameMode(GameMode.SURVIVAL);
         player.setAllowFlight(true);
         player.setFlying(true);
@@ -743,7 +743,7 @@ public class Match {
         }
 
         player.getInventory().clear();
-        player.getInventory().setArmorContents(null);
+        player.getInventory().setArmorContents(new ItemStack[4]);
         player.setGameMode(GameMode.SURVIVAL);
         player.setAllowFlight(true);
         player.setFlying(true);
