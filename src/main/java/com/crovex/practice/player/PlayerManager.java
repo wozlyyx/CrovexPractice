@@ -149,14 +149,20 @@ public class PlayerManager {
         
         giveLobbyItems(player);
 
+        if (plugin.getVisibilityManager() != null) {
+            plugin.getVisibilityManager().updateVisibility(player);
+        }
+
         // Teleport to lobby spawn
         Location lobbySpawn = null;
         try {
             lobbySpawn = plugin.getConfig().getLocation("lobby-spawn");
         } catch (Exception e) {}
-        if (lobbySpawn == null) {
+        if (lobbySpawn == null && !Bukkit.getWorlds().isEmpty()) {
             lobbySpawn = Bukkit.getWorlds().get(0).getSpawnLocation();
         }
-        player.teleport(lobbySpawn);
+        if (lobbySpawn != null) {
+            player.teleport(lobbySpawn);
+        }
     }
 }

@@ -103,19 +103,34 @@ party:
   # Minimum player count for Party FFA/Split
   min-players-for-match: 2
 
-# ---- Database Settings ----
+# ---- Database Settings (HikariCP Connection Pool) ----
 database:
-  # Database type: sqlite, mysql, or mariadb
+  # Database type: sqlite, mysql, mariadb, or postgresql
   type: sqlite
   # SQLite filename (applies to sqlite only)
   filename: practice.db
-  # MySQL / MariaDB settings (applies to mysql/mariadb only)
+  # MySQL / MariaDB / PostgreSQL settings
   host: localhost
   port: 3306
   database: practice
   username: root
   password: ""
   use-ssl: false
+  # HikariCP Pool Optimization Settings
+  pool:
+    maximum-pool-size: 10
+    minimum-idle: 2
+    connection-timeout-ms: 30000
+    idle-timeout-ms: 600000
+    max-lifetime-ms: 1800000
+    leak-detection-threshold-ms: 10000
+
+# ---- Visibility & Packet Optimization Settings ----
+visibility:
+  # Hide all players in lobby from each other to maximize FPS and reduce network traffic
+  hide-players-in-lobby: false
+  # Enable ProtocolLib packet-level entity destruction if ProtocolLib is installed
+  use-packet-interception: true
 
 # ---- Match Broadcast Settings ----
 broadcast:

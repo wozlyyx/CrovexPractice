@@ -17,6 +17,11 @@ repositories {
         name = 'placeholderapi'
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
+    // ProtocolLib Repo
+    maven {
+        name = 'dmulloy2-repo'
+        url = 'https://repo.dmulloy2.net/repository/public/'
+    }
     // Sonatype snapshots (for clean API access if needed)
     maven {
         name = 'sonatype'
@@ -30,7 +35,14 @@ dependencies {
     // PlaceholderAPI
     compileOnly 'me.clip:placeholderapi:2.11.6'
 
+    // HikariCP Connection Pool & DB Drivers
+    implementation 'com.zaxxer:HikariCP:5.1.0'
+    compileOnly 'com.mysql:mysql-connector-j:8.3.0'
+    compileOnly 'org.mariadb.jdbc:mariadb-java-client:3.3.3'
+    compileOnly 'org.postgresql:postgresql:42.7.3'
+
     // Testing Dependencies
+    testImplementation 'com.zaxxer:HikariCP:5.1.0'
     testImplementation 'org.xerial:sqlite-jdbc:3.45.2.0'
     testImplementation 'io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
@@ -40,6 +52,7 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.25.3'
     testImplementation 'com.github.seeseemelk:MockBukkit-v1.20:3.93.2'
 }
+
 
 def targetJavaVersion = 21
 java {

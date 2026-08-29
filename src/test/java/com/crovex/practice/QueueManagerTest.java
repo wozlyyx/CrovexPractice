@@ -86,7 +86,7 @@ class QueueManagerTest {
         queueManager.removeFromQueue(player, false);
 
         assertThat(queueManager.isInQueue(player)).isFalse();
-        assertThat(pp.getState()).isEqualTo(PlayerState.LOBBY);
+        assertThat(plugin.getPlayerManager().getPlayer(player).getState()).isEqualTo(PlayerState.LOBBY);
         assertThat(queueManager.getTotalQueuedCount()).isZero();
     }
 

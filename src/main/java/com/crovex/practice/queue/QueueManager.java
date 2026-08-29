@@ -71,6 +71,11 @@ public class QueueManager {
         QueueEntry entry = queues.remove(player.getUniqueId());
         if (entry == null) return;
 
+        PracticePlayer pp = plugin.getPlayerManager().getPlayer(player);
+        if (pp != null) {
+            pp.setState(PlayerState.LOBBY);
+        }
+
         plugin.getPlayerManager().resetPlayer(player);
 
         if (!silent) {

@@ -187,6 +187,9 @@ public class Match {
             }
         }
 
+        // Apply packet-level entity visibility isolation
+        plugin.getVisibilityManager().updateAllVisibility();
+
         new BukkitRunnable() {
             int countdown = plugin.getConfig().getInt("match.countdown-seconds", 5);
 
@@ -412,13 +415,8 @@ public class Match {
         player.setAllowFlight(true);
         player.setFlying(true);
         
-        // Hide spectator from alive players
-        for (UUID uuid : alivePlayers) {
-            Player alive = Bukkit.getPlayer(uuid);
-            if (alive != null && alive.isOnline()) {
-                alive.hidePlayer(plugin, player);
-            }
-        }
+        // Packet-level visibility update
+        plugin.getVisibilityManager().updateAllVisibility();
 
         // Give spectator leave item
         ItemStack leaveItem = new ItemStack(Material.RED_DYE);
@@ -714,6 +712,7 @@ public class Match {
                 arena.rollbackBlocks();
                 arena.setInUse(false);
                 plugin.getMatchManager().removeActiveMatch(id);
+                plugin.getVisibilityManager().updateAllVisibility();
             }
         }.runTaskLater(plugin, plugin.getConfig().getInt("match.lobby-return-delay", 3) * 20L);
     }
@@ -748,13 +747,7 @@ public class Match {
         player.setAllowFlight(true);
         player.setFlying(true);
         
-        // Hide spectator from alive players
-        for (UUID uuid : alivePlayers) {
-            Player p = Bukkit.getPlayer(uuid);
-            if (p != null && p.isOnline()) {
-                p.hidePlayer(plugin, player);
-            }
-        }
+        plugin.getVisibilityManager().updateAllVisibility();
 
         // Give spectator leave item
         ItemStack leaveItem = new ItemStack(Material.RED_DYE);
@@ -771,15 +764,8 @@ public class Match {
     public void removeSpectator(Player player) {
         spectators.remove(player.getUniqueId());
         
-        // Show player to match players
-        for (UUID uuid : initialPlayers) {
-            Player p = Bukkit.getPlayer(uuid);
-            if (p != null && p.isOnline()) {
-                p.showPlayer(plugin, player);
-            }
-        }
-
         plugin.getPlayerManager().resetPlayer(player);
+        plugin.getVisibilityManager().updateAllVisibility();
         player.sendMessage(plugin.getMessageManager().getMessage("match.spectating.left"));
     }
 
@@ -878,5 +864,18 @@ public class Match {
         UUID u1 = p1.getUniqueId();
         UUID u2 = p2.getUniqueId();
         return (teamA.contains(u1) && teamA.contains(u2)) || (teamB.contains(u1) && teamB.contains(u2));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Match match = (Match) o;
+        return java.util.Objects.equals(id, match.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(id);
     }
 }

@@ -40,6 +40,7 @@ public class CrovexPractice extends JavaPlugin {
     private com.crovex.practice.webhook.WebhookManager webhookManager;
     private com.crovex.practice.duel.DuelManager duelManager;
     private com.crovex.practice.arena.BlockRestoreManager blockRestoreManager;
+    private com.crovex.practice.visibility.VisibilityManager visibilityManager;
 
     @Override
     public void onEnable() {
@@ -71,6 +72,7 @@ public class CrovexPractice extends JavaPlugin {
         this.webhookManager = new com.crovex.practice.webhook.WebhookManager(this);
         this.duelManager = new com.crovex.practice.duel.DuelManager(this);
         this.blockRestoreManager = new com.crovex.practice.arena.BlockRestoreManager(this);
+        this.visibilityManager = new com.crovex.practice.visibility.VisibilityManager(this);
 
         // Load configs
         this.kitManager.loadKits();
@@ -175,6 +177,10 @@ public class CrovexPractice extends JavaPlugin {
 
     public com.crovex.practice.arena.BlockRestoreManager getBlockRestoreManager() {
         return blockRestoreManager;
+    }
+
+    public com.crovex.practice.visibility.VisibilityManager getVisibilityManager() {
+        return visibilityManager;
     }
 
     private final Map<String, Map<String, String>> subcommandMappings = new HashMap<>();
