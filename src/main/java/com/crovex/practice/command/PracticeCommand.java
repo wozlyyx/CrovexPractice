@@ -123,6 +123,21 @@ public class PracticeCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (sub.equals("lang") || sub.equals("language")) {
+            if (args.length < 2) {
+                player.sendMessage(MiniMessage.miniMessage().deserialize("<red>Kullanım / Usage: /cpractice lang <tr|en|es|fr> (Mevcut / Current: <yellow>" + plugin.getMessageManager().getLanguage() + "<red>)"));
+                return true;
+            }
+            String targetLang = args[1].toLowerCase();
+            if (!targetLang.equals("tr") && !targetLang.equals("en") && !targetLang.equals("es") && !targetLang.equals("fr")) {
+                player.sendMessage(MiniMessage.miniMessage().deserialize("<red>Geçersiz dil / Invalid language! Seçenekler / Options: <yellow>tr, en, es, fr"));
+                return true;
+            }
+            plugin.getMessageManager().setLanguage(targetLang);
+            player.sendMessage(MiniMessage.miniMessage().deserialize("<green>Dil başarıyla değiştirildi / Language successfully set to: <yellow>" + targetLang.toUpperCase()));
+            return true;
+        }
+
         if (sub.equals("admin")) {
             new AdminArenaMenu(plugin).open(player);
             return true;
@@ -912,6 +927,11 @@ public class PracticeCommand implements CommandExecutor, TabCompleter {
                 return plugin.getKitManager().getKits().stream()
                         .map(com.crovex.practice.kit.Kit::getName)
                         .filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase()))
+                        .collect(Collectors.toList());
+            }
+            if (args.length == 2 && (resolvedSub.equalsIgnoreCase("lang") || resolvedSub.equalsIgnoreCase("language"))) {
+                return Arrays.asList("tr", "en", "es", "fr").stream()
+                        .filter(s -> s.startsWith(args[1].toLowerCase()))
                         .collect(Collectors.toList());
             }
             if (args.length == 2 && resolvedSub.equalsIgnoreCase("editlayout")) {

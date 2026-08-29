@@ -7,6 +7,8 @@
 server:
   # Server name (used in placeholders and titles)
   name: "CrovexPractice"
+  # Server language (options: tr (Türkçe), en (English), es (Español), fr (Français))
+  language: "tr"
   # Lobby spawn location (saved automatically - do not modify manually, use /cpractice setlobbyspawn)
   # lobby-spawn: <automatic>
 

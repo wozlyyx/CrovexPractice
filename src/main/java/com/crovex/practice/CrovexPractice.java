@@ -338,6 +338,7 @@ public class CrovexPractice extends JavaPlugin {
         cpracSubs.set("setlobbyspawn", java.util.Arrays.asList("setlobbyspawn"));
         cpracSubs.set("viewinv", java.util.Arrays.asList("viewinv"));
         cpracSubs.set("reload", java.util.Arrays.asList("reload"));
+        cpracSubs.set("lang", java.util.Arrays.asList("lang", "language", "dil"));
 
         // queue
         org.bukkit.configuration.ConfigurationSection queue = section.createSection("queue");
