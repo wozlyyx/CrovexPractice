@@ -30,8 +30,8 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 public class GeneralListener implements Listener {
 
     private final CrovexPractice plugin;
-    private final java.util.Set<java.util.UUID> pendingKitCreation = new java.util.HashSet<>();
-    private final java.util.Map<java.util.UUID, com.crovex.practice.ffa.FfaArena> pendingFfaAlias = new java.util.HashMap<>();
+    private final java.util.Set<java.util.UUID> pendingKitCreation = java.util.concurrent.ConcurrentHashMap.newKeySet();
+    private final java.util.Map<java.util.UUID, com.crovex.practice.ffa.FfaArena> pendingFfaAlias = new java.util.concurrent.ConcurrentHashMap<>();
 
     public GeneralListener(CrovexPractice plugin) {
         this.plugin = plugin;

@@ -26,9 +26,12 @@ public class PlayerManager {
     }
 
     public CompletableFuture<PracticePlayer> loadPlayer(Player player) {
-        return plugin.getDatabaseManager().loadPlayer(player.getUniqueId(), player.getName())
+        UUID uuid = player.getUniqueId();
+        return plugin.getDatabaseManager().loadPlayer(uuid, player.getName())
                 .thenApply(practicePlayer -> {
-                    players.put(player.getUniqueId(), practicePlayer);
+                    if (player.isOnline()) {
+                        players.put(uuid, practicePlayer);
+                    }
                     return practicePlayer;
                 });
     }

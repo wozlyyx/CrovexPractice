@@ -324,6 +324,25 @@ public class Match {
 
     public void handleLogout(Player player) {
         if (state == MatchState.ENDING) return;
+        if (state == MatchState.STARTING) {
+            UUID dcUuid = player.getUniqueId();
+            if (alivePlayers.contains(dcUuid)) {
+                alivePlayers.remove(dcUuid);
+                if (matchType == MatchType.DUEL) {
+                    Player winner = dcUuid.equals(uuidA) ? playerB : playerA;
+                    endMatch(winner, player);
+                    return;
+                } else if (matchType == MatchType.PARTY_FFA) {
+                    if (alivePlayers.size() <= 1) {
+                        endMatchFFA(alivePlayers.isEmpty() ? null : alivePlayers.get(0));
+                        return;
+                    }
+                } else {
+                    eliminatePlayer(player);
+                    return;
+                }
+            }
+        }
         handleDeath(player);
     }
 
@@ -692,6 +711,7 @@ public class Match {
 
                 // Rollback blocks
                 plugin.getBlockRestoreManager().restoreAndCleanup(id);
+                arena.rollbackBlocks();
                 arena.setInUse(false);
                 plugin.getMatchManager().removeActiveMatch(id);
             }
@@ -708,9 +728,8 @@ public class Match {
     }
 
     private int calculateEloChange(int eloWinner, int eloLoser) {
-        double expectedScore = 1.0 / (1.0 + Math.pow(10.0, (eloLoser - eloWinner) / 400.0));
-        int k = 32;
-        return (int) Math.round(k * (1.0 - expectedScore));
+        int k = plugin.getConfig().getInt("queue.elo.gain-max", com.crovex.practice.util.EloCalculator.DEFAULT_K_FACTOR);
+        return com.crovex.practice.util.EloCalculator.calculateEloChange(eloWinner, eloLoser, k);
     }
 
     // Spectator Handling
