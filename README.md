@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Author-wozly__v2-blue?style=for-the-badge" alt="Author">
   <img src="https://img.shields.io/badge/Minecraft-1.20.4+-brightgreen?style=for-the-badge&logo=minecraft" alt="Minecraft Version">
-  <img src="https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=openjdk" alt="Java 21">
+  <img src="https://img.shields.io/badge/Java-21--25+-orange?style=for-the-badge&logo=openjdk" alt="Java 21-25+">
   <img src="https://img.shields.io/badge/License-MIT-purple?style=for-the-badge" alt="License">
 </p>
 
@@ -74,7 +74,7 @@
 ## 🛠️ Installation & Building
 
 ### Requirements
-- **Java 21** or higher
+- **Java 21 to Java 25+**
 - **Paper / Purpur 1.20.4+**
 - *(Optional)* **ProtocolLib** & **PlaceholderAPI**
 

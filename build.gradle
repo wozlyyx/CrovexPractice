@@ -55,6 +55,7 @@ dependencies {
 }
 
 
+// Target Java 21 bytecode (compatible with Java 21, 22, 23, 24, and 25+)
 def targetJavaVersion = 21
 java {
     def version = JavaVersion.toVersion(targetJavaVersion)
