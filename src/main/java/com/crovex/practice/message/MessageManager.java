@@ -28,7 +28,7 @@ public class MessageManager {
     public void saveAllDefaultLanguages() {
         File langDir = new File(plugin.getDataFolder(), "languages");
         langDir.mkdirs();
-        String[] supportedLanguages = {"messages_en.yml", "messages_tr.yml", "messages_es.yml", "messages_fr.yml", "messages.yml"};
+        String[] supportedLanguages = {"messages_en.yml", "messages_tr.yml", "messages_es.yml", "messages_fr.yml", "messages_it.yml", "messages.yml"};
         for (String langFile : supportedLanguages) {
             File target = new File(langDir, langFile);
             if (!target.exists()) {
