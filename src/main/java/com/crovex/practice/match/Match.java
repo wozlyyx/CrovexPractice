@@ -473,6 +473,13 @@ public class Match {
 
                 plugin.getDatabaseManager().savePlayer(ppWinner);
                 plugin.getDatabaseManager().savePlayer(ppLoser);
+
+                // Publish Cross-Server Global ELO sync
+                if (plugin.getCrossServerManager() != null) {
+                    plugin.getCrossServerManager().publishEloUpdate(ppWinner, eloChange);
+                    plugin.getCrossServerManager().publishEloUpdate(ppLoser, -eloChange);
+                    plugin.getCrossServerManager().publishLeaderboardInvalidate();
+                }
             }
         } else if (queueType == QueueType.UNRANKED) {
             if (winner != null) {

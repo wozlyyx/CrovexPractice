@@ -138,6 +138,63 @@ public class PracticeCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (sub.equals("setelo")) {
+            if (args.length < 3) {
+                player.sendMessage(plugin.getMessageManager().getMessage("commands.setelo.usage"));
+                return true;
+            }
+            Player target = Bukkit.getPlayer(args[1]);
+            int newElo;
+            try {
+                newElo = Integer.parseInt(args[2]);
+            } catch (NumberFormatException e) {
+                player.sendMessage(plugin.getMessageManager().getMessage("commands.setelo.invalid-amount"));
+                return true;
+            }
+
+            if (target != null && target.isOnline()) {
+                PracticePlayer pp = plugin.getPlayerManager().getPlayer(target);
+                if (pp != null) {
+                    int oldElo = pp.getElo();
+                    int diff = newElo - oldElo;
+                    pp.setElo(newElo);
+                    plugin.getDatabaseManager().savePlayer(pp);
+
+                    if (plugin.getCrossServerManager() != null) {
+                        plugin.getCrossServerManager().publishEloUpdate(pp, diff);
+                        plugin.getCrossServerManager().publishLeaderboardInvalidate();
+                    }
+                    player.sendMessage(plugin.getMessageManager().getMessage("commands.setelo.success",
+                            "%player%", target.getName(),
+                            "%elo%", String.valueOf(newElo)));
+                }
+            } else {
+                player.sendMessage(plugin.getMessageManager().getMessage("commands.setelo.player-not-found"));
+            }
+            return true;
+        }
+
+        if (sub.equals("syncelo")) {
+            if (args.length < 2) {
+                player.sendMessage(plugin.getMessageManager().getMessage("commands.syncelo.usage"));
+                return true;
+            }
+            Player target = Bukkit.getPlayer(args[1]);
+            if (target != null && target.isOnline()) {
+                if (plugin.getCrossServerManager() != null) {
+                    plugin.getCrossServerManager().refreshPlayerFromDatabase(target.getUniqueId(), target.getName());
+                }
+                PracticePlayer pp = plugin.getPlayerManager().getPlayer(target);
+                int currentElo = pp != null ? pp.getElo() : 1000;
+                player.sendMessage(plugin.getMessageManager().getMessage("commands.syncelo.success",
+                        "%player%", target.getName(),
+                        "%elo%", String.valueOf(currentElo)));
+            } else {
+                player.sendMessage(plugin.getMessageManager().getMessage("commands.syncelo.player-not-found"));
+            }
+            return true;
+        }
+
         if (sub.equals("admin")) {
             new AdminArenaMenu(plugin).open(player);
             return true;
@@ -926,6 +983,12 @@ public class PracticeCommand implements CommandExecutor, TabCompleter {
             if (args.length == 2 && (resolvedSub.equalsIgnoreCase("deletekit") || resolvedSub.equalsIgnoreCase("setinv") || resolvedSub.equalsIgnoreCase("seticon") || resolvedSub.equalsIgnoreCase("editinv"))) {
                 return plugin.getKitManager().getKits().stream()
                         .map(com.crovex.practice.kit.Kit::getName)
+                        .filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase()))
+                        .collect(Collectors.toList());
+            }
+            if (args.length == 2 && (resolvedSub.equalsIgnoreCase("setelo") || resolvedSub.equalsIgnoreCase("syncelo"))) {
+                return Bukkit.getOnlinePlayers().stream()
+                        .map(Player::getName)
                         .filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase()))
                         .collect(Collectors.toList());
             }

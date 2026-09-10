@@ -41,6 +41,7 @@ public class CrovexPractice extends JavaPlugin {
     private com.crovex.practice.duel.DuelManager duelManager;
     private com.crovex.practice.arena.BlockRestoreManager blockRestoreManager;
     private com.crovex.practice.visibility.VisibilityManager visibilityManager;
+    private com.crovex.practice.crossserver.CrossServerManager crossServerManager;
 
     @Override
     public void onEnable() {
@@ -73,6 +74,8 @@ public class CrovexPractice extends JavaPlugin {
         this.duelManager = new com.crovex.practice.duel.DuelManager(this);
         this.blockRestoreManager = new com.crovex.practice.arena.BlockRestoreManager(this);
         this.visibilityManager = new com.crovex.practice.visibility.VisibilityManager(this);
+        this.crossServerManager = new com.crovex.practice.crossserver.CrossServerManager(this);
+        this.crossServerManager.initialize();
 
         // Load configs
         this.kitManager.loadKits();
@@ -114,6 +117,11 @@ public class CrovexPractice extends JavaPlugin {
         }
         if (databaseManager != null) {
             databaseManager.closeConnection();
+        }
+
+        // Shutdown cross-server sync
+        if (crossServerManager != null) {
+            crossServerManager.shutdown();
         }
 
         getLogger().info("CrovexPractice deaktif edildi.");
@@ -181,6 +189,10 @@ public class CrovexPractice extends JavaPlugin {
 
     public com.crovex.practice.visibility.VisibilityManager getVisibilityManager() {
         return visibilityManager;
+    }
+
+    public com.crovex.practice.crossserver.CrossServerManager getCrossServerManager() {
+        return crossServerManager;
     }
 
     private final Map<String, Map<String, String>> subcommandMappings = new HashMap<>();
