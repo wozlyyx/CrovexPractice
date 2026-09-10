@@ -262,6 +262,15 @@ commands:
     not-found: "<red>¡Kit no encontrado!"
   setlobbyspawn:
     success: "<green>Spawn del lobby establecido en tu ubicación actual."
+  setelo:
+    usage: "<red>Uso: /cpractice setelo <jugador> <cantidad>"
+    player-not-found: "<red>¡Jugador no encontrado!"
+    invalid-amount: "<red>¡Cantidad de ELO inválida!"
+    success: "<green>Se actualizó el ELO de %player% a %elo% y se sincronizó en toda la red."
+  syncelo:
+    usage: "<red>Uso: /cpractice syncelo <jugador>"
+    player-not-found: "<red>¡Jugador no encontrado!"
+    success: "<green>Datos de ELO de %player% actualizados desde la base de datos central (Nuevo ELO: %elo%)."
   ffa:
     usage: "<red>Uso: /ffa"
     leave-usage: "<red>Uso: /leaveffa"

@@ -262,6 +262,15 @@ commands:
     not-found: "<red>Kit bulunamadı!"
   setlobbyspawn:
     success: "<green>Lobi doğma noktası bulunduğunuz konuma başarıyla ayarlandı."
+  setelo:
+    usage: "<red>Kullanım: /cpractice setelo <oyuncu> <miktar>"
+    player-not-found: "<red>Oyuncu bulunamadı!"
+    invalid-amount: "<red>Geçersiz ELO miktarı!"
+    success: "<green>%player% adlı oyuncunun ELO'su %elo% olarak güncellendi ve ağa senkronize edildi."
+  syncelo:
+    usage: "<red>Kullanım: /cpractice syncelo <oyuncu>"
+    player-not-found: "<red>Oyuncu bulunamadı!"
+    success: "<green>%player% adlı oyuncunun ELO verisi merkezi veritabanından yenilendi (Yeni ELO: %elo%)."
   ffa:
     usage: "<red>Kullanım: /ffa"
     leave-usage: "<red>Kullanım: /leaveffa"

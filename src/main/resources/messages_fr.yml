@@ -262,6 +262,15 @@ commands:
     not-found: "<red>Kit introuvable !"
   setlobbyspawn:
     success: "<green>Point d'apparition du lobby défini avec succès sur votre position actuelle."
+  setelo:
+    usage: "<red>Utilisation: /cpractice setelo <joueur> <montant>"
+    player-not-found: "<red>Joueur introuvable !"
+    invalid-amount: "<red>Montant d'ELO invalide !"
+    success: "<green>L'ELO de %player% a été mis à jour à %elo% et synchronisé sur tout le réseau."
+  syncelo:
+    usage: "<red>Utilisation: /cpractice syncelo <joueur>"
+    player-not-found: "<red>Joueur introuvable !"
+    success: "<green>Données ELO de %player% rafraîchies depuis la base de données centrale (Nouvel ELO: %elo%)."
   ffa:
     usage: "<red>Utilisation: /ffa"
     leave-usage: "<red>Utilisation: /leaveffa"

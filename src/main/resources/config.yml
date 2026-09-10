@@ -127,6 +127,35 @@ database:
     max-lifetime-ms: 1800000
     leak-detection-threshold-ms: 10000
 
+# ---- Cross-Server / Global ELO Settings ----
+# Synchronize ELO, player stats, and leaderboards across multiple practice servers (Lobbies, Arenas/Nodes)
+cross-server:
+  # Enable or disable cross-server synchronization
+  enabled: false
+  # Unique identifier for this server instance (e.g., lobby-1, node-1)
+  server-id: "practice-1"
+  # Synchronization mode: REDIS (instant pub/sub), DATABASE (direct SQL sync), or NONE
+  sync-mode: "REDIS"
+  # Redis configuration (used when sync-mode is REDIS)
+  redis:
+    host: "localhost"
+    port: 6379
+    password: ""
+    database: 0
+    timeout-ms: 2000
+    ssl: false
+    # Channel prefix for Pub/Sub events
+    channel-prefix: "crovexpractice"
+  # Database mode fallback/periodic sync
+  database-sync:
+    # How often to check for external updates in database mode (seconds, 0 to disable periodic poll)
+    poll-interval-seconds: 30
+  # Features to synchronize across servers
+  features:
+    sync-elo: true
+    sync-stats: true
+    cross-server-broadcasts: true
+
 # ---- Visibility & Packet Optimization Settings ----
 visibility:
   # Hide all players in lobby from each other to maximize FPS and reduce network traffic
@@ -190,6 +219,8 @@ commands:
       resetitems: ["resetitems"]
       viewinv: ["viewinv"]
       reload: ["reload"]
+      setelo: ["setelo"]
+      syncelo: ["syncelo"]
   queue:
     name: "queue"
     aliases: ["q"]

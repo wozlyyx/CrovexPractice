@@ -43,7 +43,12 @@
 - **Packet-Level Entity Visibility:** ProtocolLib integration for packet-level player hiding in lobbies to eliminate client render lag and save bandwidth.
 - **Clean Architecture:** Non-blocking async queries and cache-backed player data.
 
-### 🌐 Multi-Language & Integrations
+### 🌐 Cross-Server ELO & Global Synchronization
+- **Redis Pub/Sub Synchronization:** Instantaneous sub-millisecond ELO, stats, and leaderboard updates across multiple lobby and arena node servers.
+- **Shared Central Database:** Seamlessly syncs ranked ratings, win streaks, and match outcomes across entire Minecraft networks.
+- **Fault-Tolerant Fallback:** Automatic offline protection and database-direct fallback mode if Redis is offline or disabled.
+
+### 🌍 Multi-Language & Integrations
 - **Multi-Language Engine:** Built-in localization files for English (`en`), Turkish (`tr`), Spanish (`es`), and French (`fr`).
 - **Discord Webhooks:** Automatic notifications for match conclusions, FFA winstreaks, and administrative actions.
 - **PlaceholderAPI Hook:** Rich set of placeholders for scoreboards, tablists, and chat formatting.
