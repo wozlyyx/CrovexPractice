@@ -30,6 +30,15 @@ public class PlayerManager {
         return plugin.getDatabaseManager().loadPlayer(uuid, player.getName())
                 .thenApply(practicePlayer -> {
                     if (player.isOnline()) {
+                        PracticePlayer existing = players.get(uuid);
+                        if (existing != null) {
+                            practicePlayer.setState(existing.getState());
+                            practicePlayer.setActiveMatch(existing.getActiveMatch());
+                            practicePlayer.setActiveParty(existing.getActiveParty());
+                            if (practicePlayer.getKitLayouts().isEmpty() && !existing.getKitLayouts().isEmpty()) {
+                                practicePlayer.getKitLayouts().putAll(existing.getKitLayouts());
+                            }
+                        }
                         players.put(uuid, practicePlayer);
                     }
                     return practicePlayer;

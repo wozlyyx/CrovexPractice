@@ -53,8 +53,10 @@ public class GeneralListener implements Listener {
         plugin.getPlayerManager().loadPlayer(player).thenAccept(pp -> {
             // Setup player items & state in main thread
             Bukkit.getScheduler().runTask(plugin, () -> {
-                plugin.getPlayerManager().resetPlayer(player);
-                plugin.getVisibilityManager().updateVisibility(player);
+                if (pp.getState() == PlayerState.LOBBY) {
+                    plugin.getPlayerManager().resetPlayer(player);
+                    plugin.getVisibilityManager().updateVisibility(player);
+                }
                 player.sendMessage(plugin.getMessageManager().getMessage("general.welcome-join", "%player%", player.getName()));
             });
         });
