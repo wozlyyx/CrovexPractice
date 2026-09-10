@@ -26,14 +26,19 @@ public class MessageManager {
     }
 
     public void saveAllDefaultLanguages() {
-        plugin.getDataFolder().mkdirs();
+        File langDir = new File(plugin.getDataFolder(), "languages");
+        langDir.mkdirs();
         String[] supportedLanguages = {"messages_en.yml", "messages_tr.yml", "messages_es.yml", "messages_fr.yml", "messages.yml"};
         for (String langFile : supportedLanguages) {
-            File target = new File(plugin.getDataFolder(), langFile);
+            File target = new File(langDir, langFile);
             if (!target.exists()) {
                 try {
-                    plugin.saveResource(langFile, false);
-                } catch (IllegalArgumentException ignored) {}
+                    plugin.saveResource("languages/" + langFile, false);
+                } catch (IllegalArgumentException ignored) {
+                    try {
+                        plugin.saveResource(langFile, false);
+                    } catch (IllegalArgumentException ignored2) {}
+                }
             }
         }
     }
@@ -42,20 +47,40 @@ public class MessageManager {
         this.currentLanguage = plugin.getConfig().getString("language", "tr").toLowerCase();
         
         String fileName = "messages_" + currentLanguage + ".yml";
-        file = new File(plugin.getDataFolder(), fileName);
-
+        File langDir = new File(plugin.getDataFolder(), "languages");
+        
+        file = new File(langDir, fileName);
         if (!file.exists()) {
-            // Check fallback to messages.yml
-            file = new File(plugin.getDataFolder(), "messages.yml");
-            if (!file.exists()) {
-                plugin.saveResource("messages.yml", false);
+            // Check legacy root folder
+            File legacyFile = new File(plugin.getDataFolder(), fileName);
+            if (legacyFile.exists()) {
+                file = legacyFile;
+            } else {
+                // Fallback to messages.yml inside languages folder
+                file = new File(langDir, "messages.yml");
+                if (!file.exists()) {
+                    File legacyFallback = new File(plugin.getDataFolder(), "messages.yml");
+                    if (legacyFallback.exists()) {
+                        file = legacyFallback;
+                    } else {
+                        try {
+                            plugin.saveResource("languages/messages.yml", false);
+                        } catch (Exception ignored) {}
+                    }
+                }
             }
         }
 
         config = YamlConfiguration.loadConfiguration(file);
 
         // Load defaults from corresponding JAR resource
-        InputStream langStream = plugin.getResource(fileName);
+        InputStream langStream = plugin.getResource("languages/" + fileName);
+        if (langStream == null) {
+            langStream = plugin.getResource(fileName);
+        }
+        if (langStream == null) {
+            langStream = plugin.getResource("languages/messages.yml");
+        }
         if (langStream == null) {
             langStream = plugin.getResource("messages.yml");
         }
@@ -64,7 +89,7 @@ public class MessageManager {
             config.setDefaults(defaultValues);
         }
 
-        plugin.getLogger().info("Dil yapilandirmasi yuklendi: " + currentLanguage.toUpperCase() + " (" + file.getName() + ")");
+        plugin.getLogger().info("Dil yapilandirmasi yuklendi: " + currentLanguage.toUpperCase() + " (languages/" + file.getName() + ")");
     }
 
     public void setLanguage(String lang) {
